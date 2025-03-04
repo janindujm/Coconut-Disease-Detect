@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from flask import Flask, render_template, request, jsonify, redirect, url_for
+=======
+from flask import Flask, render_template, request, jsonify
+>>>>>>> f3e30d59da9b7a1cb85495e8faeb682df8da3d41
 from flask_cors import CORS  # For handling CORS issues
 import json
 import requests
@@ -55,6 +59,7 @@ def upload():
         if os.path.exists(file_path):
             os.remove(file_path)
 
+<<<<<<< HEAD
 @app.route("/healthy")
 def healthy():
     return render_template("healthy.html")
@@ -69,3 +74,7 @@ def drying():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
+=======
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=5000)  # Accessible from other devices on the network
+>>>>>>> f3e30d59da9b7a1cb85495e8faeb682df8da3d41

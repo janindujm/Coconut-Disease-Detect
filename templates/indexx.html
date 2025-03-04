@@ -17,6 +17,19 @@ AI Engine
         <!-- End -->
         <div class="row">
             <div class="col mx-auto col-sm-12 col-md-6 col-lg-6">
+<<<<<<< HEAD
+=======
+                <div class="p-5 bg-white shadow rounded-lg" style="height: 100%; margin-bottom: 5%;">
+                    <h5><b>Why is it necessary to detect disease in plants?</b></h5>
+                    <p>Plant diseases affect the growth of their respective species. In addition, some research gaps are
+                        identified from which to obtain greater transparency for detecting diseases in plants, even
+                        before their symptoms appear clearly. Diagnosis is one of the most important aspects of a plant pathologist's training. Without proper identification of the disease and the disease-causing agent, disease control measures can be a
+                        waste of time and money and can lead to further plant losses. Proper disease diagnosis is
+                        necessary.</p>
+                </div>
+            </div>
+            <div class="col mx-auto col-sm-12 col-md-6 col-lg-6">
+>>>>>>> f3e30d59da9b7a1cb85495e8faeb682df8da3d41
                 <div class="p-5 bg-white shadow rounded-lg" style="height: 100%;">
                     <h6 class="text-center mb-4 text-muted">
                         Drag and drop an image of your plant's leaf below, or click to select a file.
@@ -24,6 +37,7 @@ AI Engine
 
                     <!-- Drag-and-drop area -->
                     <div id="dropzone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 10px; cursor: pointer;">
+<<<<<<< HEAD
                          click to select an image
                     </div>
 
@@ -35,11 +49,20 @@ AI Engine
                         <p>Uploading...</p>
                     </div>
 
+=======
+                         click to select a image
+                    </div>
+
+                    
+>>>>>>> f3e30d59da9b7a1cb85495e8faeb682df8da3d41
                     <div id="output"></div>
                     <script>
                         const dropzone = document.getElementById('dropzone');
                         const output = document.getElementById('output');
+<<<<<<< HEAD
                         const loading = document.getElementById('loading');
+=======
+>>>>>>> f3e30d59da9b7a1cb85495e8faeb682df8da3d41
                 
                         dropzone.addEventListener('dragover', (e) => {
                             e.preventDefault();
@@ -69,11 +92,14 @@ AI Engine
                         });
                 
                         function uploadFile(file) {
+<<<<<<< HEAD
                             // Hide dropzone and show loading spinner
                             dropzone.style.display = 'none';
                             loading.style.display = 'block';
                             output.innerHTML = '';  // Clear previous output
 
+=======
+>>>>>>> f3e30d59da9b7a1cb85495e8faeb682df8da3d41
                             const formData = new FormData();
                             formData.append('file', file);
                 
@@ -83,6 +109,7 @@ AI Engine
                             })
                             .then(response => response.json())
                             .then(data => {
+<<<<<<< HEAD
                                 loading.style.display = 'none';  // Hide loading spinner
                                 dropzone.style.display = 'block'; // Show dropzone again
 
@@ -101,6 +128,11 @@ AI Engine
                             .catch(error => {
                                 loading.style.display = 'none';  // Hide loading spinner
                                 dropzone.style.display = 'block'; // Show dropzone again
+=======
+                                output.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                            })
+                            .catch(error => {
+>>>>>>> f3e30d59da9b7a1cb85495e8faeb682df8da3d41
                                 output.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
                             });
                         }
@@ -110,4 +142,10 @@ AI Engine
         </div>
     </div>
 </div>
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> f3e30d59da9b7a1cb85495e8faeb682df8da3d41
 {% endblock body %}
