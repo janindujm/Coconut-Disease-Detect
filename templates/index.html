@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Inference</title>
+    <style>
+        #dropzone {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            text-align: center;
+            color: #333;
+            font-family: Arial, sans-serif;
+            margin-top: 50px;
+        }
+        #dropzone.dragover {
+            border-color: #666;
+            background-color: #f9f9f9;
+        }
+        #output {
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="dropzone">Drag and drop an image here, or click to select a file</div>
+    <div id="output"></div>
+    <script>
+        const dropzone = document.getElementById('dropzone');
+        const output = document.getElementById('output');
+
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('dragover');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            uploadFile(file);
+        });
+
+        dropzone.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                uploadFile(file);
+            });
+            input.click();
+        });
+
+        function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                output.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            })
+            .catch(error => {
+                output.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>

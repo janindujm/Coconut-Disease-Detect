@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% block pagetitle %}
+AI Engine
+{% endblock pagetitle %}
+
+{% block body %}
+<div>
+    <div class="container">
+        <!-- For demo purpose -->
+        <div class="row mb-5 text-center text-white">
+            <div class="col-lg-10 mx-auto">
+                <h1 class="display-4" style="padding-top: 2%;font-weight: 400;color: rgb(4, 54, 4);"><b>Detect Disease</b></h1>
+            </div>
+        </div>
+        <!-- End -->
+        <div class="row">
+            <div class="col mx-auto col-sm-12 col-md-6 col-lg-6">
+                <div class="p-5 bg-white shadow rounded-lg" style="height: 100%;">
+                    <h6 class="text-center mb-4 text-muted">
+                        Drag and drop an image of your plant's leaf below, or click to select a file.
+                    </h6>
+
+                    <!-- Drag-and-drop area -->
+                    <div id="dropzone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 10px; cursor: pointer;">
+                         click to select an image
+                    </div>
+
+                    <!-- Loading spinner -->
+                    <div id="loading" style="display:none; text-align: center; margin-top: 20px;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <p>Uploading...</p>
+                    </div>
+
+                    <div id="output"></div>
+                    <script>
+                        const dropzone = document.getElementById('dropzone');
+                        const output = document.getElementById('output');
+                        const loading = document.getElementById('loading');
+                
+                        dropzone.addEventListener('dragover', (e) => {
+                            e.preventDefault();
+                            dropzone.classList.add('dragover');
+                        });
+                
+                        dropzone.addEventListener('dragleave', () => {
+                            dropzone.classList.remove('dragover');
+                        });
+                
+                        dropzone.addEventListener('drop', (e) => {
+                            e.preventDefault();
+                            dropzone.classList.remove('dragover');
+                            const file = e.dataTransfer.files[0];
+                            uploadFile(file);
+                        });
+                
+                        dropzone.addEventListener('click', () => {
+                            const input = document.createElement('input');
+                            input.type = 'file';
+                            input.accept = 'image/*';
+                            input.addEventListener('change', (e) => {
+                                const file = e.target.files[0];
+                                uploadFile(file);
+                            });
+                            input.click();
+                        });
+                
+                        function uploadFile(file) {
+                            // Hide dropzone and show loading spinner
+                            dropzone.style.display = 'none';
+                            loading.style.display = 'block';
+                            output.innerHTML = '';  // Clear previous output
+
+                            const formData = new FormData();
+                            formData.append('file', file);
+                
+                            fetch('/upload', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                loading.style.display = 'none';  // Hide loading spinner
+                                dropzone.style.display = 'block'; // Show dropzone again
+
+                                // Check the result and redirect based on the condition
+                                const result = data.images[0]?.results[0]?.name;
+                                if (result === "Healthy") {
+                                    window.location.href = "{{ url_for('healthy') }}";  // Using url_for to dynamically generate the URL
+                                } else if (result === "Yellowing") {
+                                    window.location.href = "{{ url_for('yellowing') }}";  // Using url_for to dynamically generate the URL
+                                } else if (result === "Drying") {
+                                    window.location.href = "{{ url_for('drying') }}";  // Using url_for to dynamically generate the URL
+                                } else {
+                                    output.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                                }
+                            })
+                            .catch(error => {
+                                loading.style.display = 'none';  // Hide loading spinner
+                                dropzone.style.display = 'block'; // Show dropzone again
+                                output.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                            });
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
